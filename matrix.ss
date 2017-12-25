@@ -130,28 +130,28 @@
         ((t0 (real-time))
          (tm (bench a b))
          (t1 (real-time)))
-      (format #t "~s x ~s matrix multiply took ~s msec" sz sz (- t1 t0))
+      (format #t "~s x ~s matrix multiply in Chez took ~s msec" sz sz (- t1 t0))
       (newline)
       ))))
 
 #|
 chez scheme timings, on mac book pro:
 
-500 x 500 matrix multiply took 4373 msec
-500 x 500 matrix multiply took 4311 msec
-500 x 500 matrix multiply took 4240 msec
-500 x 500 matrix multiply took 4259 msec
-500 x 500 matrix multiply took 4220 msec
-500 x 500 matrix multiply took 4146 msec
-500 x 500 matrix multiply took 4268 msec
-500 x 500 matrix multiply took 4216 msec
-500 x 500 matrix multiply took 4205 msec
-500 x 500 matrix multiply took 4206 msec
-500 x 500 matrix multiply took 4182 msec
-500 x 500 matrix multiply took 4226 msec
-500 x 500 matrix multiply took 4310 msec
-500 x 500 matrix multiply took 4342 msec
-500 x 500 matrix multiply took 4556 msec
-500 x 500 matrix multiply took 4258 msec
+500 x 500 matrix multiply in Chez took 4373 msec
+500 x 500 matrix multiply in Chez took 4311 msec
+500 x 500 matrix multiply in Chez took 4240 msec
+500 x 500 matrix multiply in Chez took 4259 msec
+500 x 500 matrix multiply in Chez took 4220 msec
+500 x 500 matrix multiply in Chez took 4146 msec
+500 x 500 matrix multiply in Chez took 4268 msec
+500 x 500 matrix multiply in Chez took 4216 msec
+500 x 500 matrix multiply in Chez took 4205 msec
+500 x 500 matrix multiply in Chez took 4206 msec
+500 x 500 matrix multiply in Chez took 4182 msec
+500 x 500 matrix multiply in Chez took 4226 msec
+500 x 500 matrix multiply in Chez took 4310 msec
+500 x 500 matrix multiply in Chez took 4342 msec
+500 x 500 matrix multiply in Chez took 4556 msec
+500 x 500 matrix multiply in Chez took 4258 msec
 
 |#

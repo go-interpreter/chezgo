@@ -100,6 +100,24 @@ go run matmul.go
 ~~~
 
 
+turning on full optimization on Chez only
+helped a little
+~~~
+$ scheme  --optimize-level 3 matrix.ss
+Chez Scheme Version 9.5.1
+Copyright 1984-2017 Cisco Systems, Inc.
+
+500 x 500 matrix multiply in Chez took 3798 msec
+500 x 500 matrix multiply in Chez took 3824 msec
+500 x 500 matrix multiply in Chez took 3855 msec
+500 x 500 matrix multiply in Chez took 3997 msec
+500 x 500 matrix multiply in Chez took 3829 msec
+500 x 500 matrix multiply in Chez took 3869 msec
+500 x 500 matrix multiply in Chez took 3886 msec
+500 x 500 matrix multiply in Chez took 3936 msec
+500 x 500 matrix multiply in Chez took 3931 msec
+~~~
+
 notes
 -----
 
