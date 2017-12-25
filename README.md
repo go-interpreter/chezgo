@@ -4,7 +4,7 @@ chezgo: embed chez scheme in Go
 # use
 
 ~~~
-$ make run
+$ make run # will build then give you a chez repl, running within golang.
 ...
 > (+ 10 12)
 22
