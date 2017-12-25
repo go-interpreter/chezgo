@@ -64,6 +64,41 @@ The open source github repo. Chez is Apache2 licensed.
 
 https://github.com/cisco/ChezScheme
 
+# initial, simple matrix mulitply benchmark
+
+Chez matrix multiplication, in matrix.ss
+
+~~~
+500 x 500 matrix multiply in Chez took 4373 msec
+500 x 500 matrix multiply in Chez took 4311 msec
+500 x 500 matrix multiply in Chez took 4240 msec
+500 x 500 matrix multiply in Chez took 4259 msec
+500 x 500 matrix multiply in Chez took 4220 msec
+500 x 500 matrix multiply in Chez took 4146 msec
+500 x 500 matrix multiply in Chez took 4268 msec
+500 x 500 matrix multiply in Chez took 4216 msec
+500 x 500 matrix multiply in Chez took 4205 msec
+500 x 500 matrix multiply in Chez took 4206 msec
+500 x 500 matrix multiply in Chez took 4182 msec
+
+~~~
+
+
+Go matrix multiplication, in cmd/matmul subdir
+~~~
+go run matmul.go
+500 x 500 matrix multiply in Go took 437 msec
+500 x 500 matrix multiply in Go took 428 msec
+500 x 500 matrix multiply in Go took 454 msec
+500 x 500 matrix multiply in Go took 428 msec
+500 x 500 matrix multiply in Go took 436 msec
+500 x 500 matrix multiply in Go took 451 msec
+500 x 500 matrix multiply in Go took 435 msec
+500 x 500 matrix multiply in Go took 435 msec
+500 x 500 matrix multiply in Go took 438 msec
+500 x 500 matrix multiply in Go took 435 msec
+~~~
+
 
 notes
 -----
