@@ -23,9 +23,15 @@ Chez has a generational garbage collector that automatically collects code and d
 
 Other schemes, like Racket, plan to move to Chez underneath, now that it is freely available. https://groups.google.com/forum/#!msg/racket-dev/2BV3ElyfF8Y/4RSd3XbECAAJ
 
-# architecture talk
+# background
+
+architecture talk slides
 
 http://icfp06.cs.uchicago.edu/dybvig-talk.pdf
+
+history of Chez Scheme
+
+https://www.cs.indiana.edu/~dyb/pubs/hocs.pdf
 
 # benchmarks
 
