@@ -33,7 +33,7 @@ sh -c 'SCHEMEHEAPDIRS=../boot/%m ../bin/scheme'
 #define CALL0(who) Scall0(Stop_level_value(Sstring_to_symbol(who)))
 #define CALL1(who, arg) Scall1(Stop_level_value(Sstring_to_symbol(who)), arg)
 
-extern void custom_init(void);
+static void custom_init(void) {}
 
 int main(int argc, char *argv[]) {
   int n, new_argc = 1, ignoreflags = 0;

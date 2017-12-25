@@ -25,7 +25,7 @@ CFLAGS=-m64 -m64 -DHAVE_HIDDEN
 #           -Wstrict-prototypes -Wmissing-prototypes
 
 SFLAGS=-m64 -fPIC -m64 -DHAVE_HIDDEN
-LDFLAGS=-L/usr/local/lib -L/usr/local/opt/bison/lib -L/usr/local/lib -L/usr/local/opt/bison/lib -L/usr/local/lib -L/usr/local/opt/bison/lib 
+LDFLAGS=
 TEST_LDFLAGS=-L. libz.a
 LDSHARED=gcc -dynamiclib -install_name ${exec_prefix}/lib/libz.1.dylib -compatibility_version 1 -current_version 1.2.11
 CPP=gcc -E

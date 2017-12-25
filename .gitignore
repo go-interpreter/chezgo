@@ -1,0 +1,7 @@
+chez_scheme_9.5.1/bin/a6osx/scheme
+chez_scheme_9.5.1/bin/a6osx/petite
+chez_scheme_9.5.1/bin/scheme
+chez_scheme_9.5.1/bin/petite
+*~
+*.o
+chezgo

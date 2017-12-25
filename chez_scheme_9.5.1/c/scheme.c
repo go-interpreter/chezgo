@@ -435,7 +435,7 @@ static char *get_defaultheapdirs() {
 #else /* not WIN32: */
 #define SEARCHPATHSEP ':'
 #ifndef DEFAULT_HEAP_PATH
-#define DEFAULT_HEAP_PATH "/usr/lib/csv%v/%m:/usr/local/lib/csv%v/%m"
+#define DEFAULT_HEAP_PATH "~/go/src/github.com/glycerine/chezgo/lib/csv%v/%m:./lib/csv%v/%m:/usr/lib/csv%v/%m:/usr/local/lib/csv%v/%m"
 #endif
 
 static char *get_defaultheapdirs() {
