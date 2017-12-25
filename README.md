@@ -5,6 +5,8 @@ chezgo: embed chez scheme in Go
 
 Chez Scheme is fast, mature, incremental, optimizing native code compiler that produces very fast code very quickly. There is also its slower companion, Petite Scheme, a bytecode compiler within the same system, available for those who need extreme portability. Prior to 2016 it was only available for a commercial license fee, but it is now open source.
 
+Chez's optimizing compiler works both incrementally (but still does some cross package optimization), as well as providing calls for whole-program compilation and optimization.
+
 Chez is used in Robotic drug testing, Chip layout and design, multithreaded web services, and enterprise systems. Some users include Sandia National Labs, Motorola, Freescale, Beckman Coulter, Disney, University of Indiana (where Dybvig is a professor of Computer Science). It has been in development since 1984 (started on a VAX!).
 
 Chez has a generational garbage collector that automatically collects code and data that is no longer in use. Chez includes a debugger, and a full numeric tower.
