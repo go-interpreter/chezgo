@@ -73,17 +73,16 @@ Chez Scheme Version 9.5.1
 Copyright 1984-2017 Cisco Systems, Inc.
 > (import (my-matrix))
 > (run-bench)
-500 x 500 matrix multiply in Chez took 2435 msec
-500 x 500 matrix multiply in Chez took 2498 msec
-500 x 500 matrix multiply in Chez took 2486 msec
-500 x 500 matrix multiply in Chez took 2496 msec
-500 x 500 matrix multiply in Chez took 2465 msec
-500 x 500 matrix multiply in Chez took 2499 msec
-500 x 500 matrix multiply in Chez took 2492 msec
-500 x 500 matrix multiply in Chez took 2532 msec
-500 x 500 matrix multiply in Chez took 2463 msec
-500 x 500 matrix multiply in Chez took 2526 msec
-
+500 x 500 matrix multiply in Chez took 2075 msec
+500 x 500 matrix multiply in Chez took 2040 msec
+500 x 500 matrix multiply in Chez took 2054 msec
+500 x 500 matrix multiply in Chez took 2059 msec
+500 x 500 matrix multiply in Chez took 2066 msec
+500 x 500 matrix multiply in Chez took 2048 msec
+500 x 500 matrix multiply in Chez took 2053 msec
+500 x 500 matrix multiply in Chez took 2112 msec
+500 x 500 matrix multiply in Chez took 2064 msec
+500 x 500 matrix multiply in Chez took 2060 msec
 ~~~
 
 

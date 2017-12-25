@@ -68,7 +68,7 @@ usage:
             (do ((j 0 (+ j 1)))
                 ((= j nc))
               (matrix-set! r i j
-                           (* x (matrix-ref m i j))))))))
+                           (fl* x (matrix-ref m i j))))))))
 
     ;; mat-mat-mul multiplies one matrix by another, after verifying
     ;; that the first matrix has as many columns as the second
@@ -96,7 +96,7 @@ usage:
                     ((= j nc2))
                   (set! tot (vector-ref ith-output-row j))
                   (set! tot (+ tot
-                               (* (vector-ref ith-input-row k)
+                               (fl* (vector-ref ith-input-row k)
                                   (vector-ref kth-input-row j))))
                   (vector-set! ith-output-row j tot))))))))
     
@@ -252,6 +252,19 @@ Copyright 1984-2017 Cisco Systems, Inc.
 500 x 500 matrix multiply in Chez took 2532 msec
 500 x 500 matrix multiply in Chez took 2463 msec
 500 x 500 matrix multiply in Chez took 2526 msec
+
+;; update! shifting to (fl*) instead of (*) shaved
+;; off 17%
+500 x 500 matrix multiply in Chez took 2075 msec
+500 x 500 matrix multiply in Chez took 2040 msec
+500 x 500 matrix multiply in Chez took 2054 msec
+500 x 500 matrix multiply in Chez took 2059 msec
+500 x 500 matrix multiply in Chez took 2066 msec
+500 x 500 matrix multiply in Chez took 2048 msec
+500 x 500 matrix multiply in Chez took 2053 msec
+500 x 500 matrix multiply in Chez took 2112 msec
+500 x 500 matrix multiply in Chez took 2064 msec
+500 x 500 matrix multiply in Chez took 2060 msec
 
 |#
 
