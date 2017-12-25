@@ -1,5 +1,20 @@
+#|
+usage:
 
-(optimize-level 3)
+> (import (my-matrix))
+> (sanity)
+#t
+> (run-bench)
+500 x 500 matrix multiply in Chez took 2472 msec
+500 x 500 matrix multiply in Chez took 2474 msec
+...
+
+|#
+
+(library (my-matrix (1))
+         (export run-bench sanity)
+         (import (chezscheme))
+
 
 ;;; reference: https://www.scheme.com/tspl3/examples.html
 
@@ -69,17 +84,23 @@
               (match-error m1 m2))
           (do ((i 0 (+ i 1)))
               ((= i nr1) r)
+            
             (do ((k 0 (+ k 1)))
                 ((= k nr2))
-              (do ((j 0 (+ j 1)))
-                  ((= j nc2))
-                (set! tot (matrix-ref r i j))
-                (set! tot (+ tot
-                             (* (matrix-ref m1 i k)
-                                (matrix-ref m2 k j))))
-                (matrix-set! r i j tot)))))))
-
-  ;; type-error is called to complain when mul receives an invalid
+              
+              (let ((ith-input-row (vector-ref m1 i))
+                    (kth-input-row (vector-ref m2 k))
+                    (ith-output-row (vector-ref r i)))
+                
+                (do ((j 0 (+ j 1)))
+                    ((= j nc2))
+                  (set! tot (vector-ref ith-output-row j))
+                  (set! tot (+ tot
+                               (* (vector-ref ith-input-row k)
+                                  (vector-ref kth-input-row j))))
+                  (vector-set! ith-output-row j tot))))))))
+    
+    ;; type-error is called to complain when mul receives an invalid
   ;; type of argument.
     (define type-error
       (lambda (what)
@@ -122,6 +143,7 @@
 
 (define (bench a b) (mul a b))
 
+(define (run-bench)
 (do ((runs 0 (+ 1 runs))) ((>= runs 10))
 (do ((sz 500 (+ sz 100)))
     ((>= sz 600))
@@ -135,7 +157,68 @@
          (t1 (real-time)))
       (format #t "~s x ~s matrix multiply in Chez took ~s msec" sz sz (- t1 t0))
       (newline)
-      ))))
+      )))))
+
+
+(define (fill-sequential m start)
+    (let* ((nr (matrix-rows m))
+           (nc (matrix-columns m))
+           (val start))
+      (do ((i 0 (+ i 1)))
+          ((= i nr))
+        (do ((j 0 (+ j 1)))
+            ((= j nc))
+          (matrix-set! m i j val)
+          (set! val (+ 1 val))
+          ))))
+
+(define (matrix-same m1 m2)
+  (let* (
+         (nr1 (matrix-rows m1))
+         (nr2 (matrix-rows m2))
+         (nc1 (matrix-columns m1))
+         (nc2 (matrix-columns m2))
+         (final #t)
+         )
+    (if (not (eq? nc1 nc2))
+        (set! final #f)
+      (if (not (eq? nr1 nr2))
+          (set! final #f)
+        (do ((i 0 (+ i 1)))
+            ((= i nr1))
+          (do ((j 0 (+ j 1)))
+              ((= j nc1))
+            (let*
+                ((v1 (matrix-ref m1 i j))
+                 (v2 (matrix-ref m2 i j))
+                 )
+              (if (not (eq? v1 v2))
+                  (set! final #f))
+              )))))
+    final))
+
+;; sanity test, is our logic right?
+;; expect that #(#(1 2) #(3 4))  x #(#(5 6) #(7 8)) == #(#(19 22) #(43 50))
+
+(define (sanity)
+  (let* (
+         (expect (make-matrix 2 2))
+         (a (make-matrix 2 2))
+         (b (make-matrix 2 2))
+         )
+    (matrix-set! expect 0 0 19)
+    (matrix-set! expect 0 1 22)
+    (matrix-set! expect 1 0 43)
+    (matrix-set! expect 1 1 50)
+    (fill-sequential a 1)
+    (fill-sequential b 5)
+    (let* (
+           (obs (mul a b))
+           )
+      ;; verify this gives us true
+      (matrix-same obs expect)
+      )))
+
 
 #|
 chez scheme timings, on mac book pro:
@@ -145,15 +228,30 @@ chez scheme timings, on mac book pro:
 Chez Scheme Version 9.5.1
 Copyright 1984-2017 Cisco Systems, Inc.
 
-500 x 500 matrix multiply in Chez took 3232 msec
-500 x 500 matrix multiply in Chez took 3244 msec
-500 x 500 matrix multiply in Chez took 3185 msec
-500 x 500 matrix multiply in Chez took 3218 msec
-500 x 500 matrix multiply in Chez took 3202 msec
-500 x 500 matrix multiply in Chez took 3290 msec
-500 x 500 matrix multiply in Chez took 3225 msec
-500 x 500 matrix multiply in Chez took 3190 msec
-500 x 500 matrix multiply in Chez took 3224 msec
-500 x 500 matrix multiply in Chez took 3246 msec
+;; top-level bindings, without a library wrapper:
+500 x 500 matrix multiply in Chez took 2606 msec
+500 x 500 matrix multiply in Chez took 2605 msec
+500 x 500 matrix multiply in Chez took 2571 msec
+500 x 500 matrix multiply in Chez took 2634 msec
+500 x 500 matrix multiply in Chez took 2597 msec
+500 x 500 matrix multiply in Chez took 2603 msec
+500 x 500 matrix multiply in Chez took 2565 msec
+500 x 500 matrix multiply in Chez took 2535 msec
+500 x 500 matrix multiply in Chez took 2587 msec
+500 x 500 matrix multiply in Chez took 2547 msec
+
+;; inside the my-matrix library:
+500 x 500 matrix multiply in Chez took 2472 msec
+500 x 500 matrix multiply in Chez took 2474 msec
+500 x 500 matrix multiply in Chez took 2465 msec
+500 x 500 matrix multiply in Chez took 2423 msec
+500 x 500 matrix multiply in Chez took 2463 msec
+500 x 500 matrix multiply in Chez took 2708 msec
+500 x 500 matrix multiply in Chez took 2569 msec
+500 x 500 matrix multiply in Chez took 2509 msec
+500 x 500 matrix multiply in Chez took 2524 msec
+500 x 500 matrix multiply in Chez took 2530 msec
 
 |#
+
+) ;; end my-matrix library
