@@ -1,0 +1,35 @@
+rm Makefile ; cp Mf-a6osx .
+rm alloc.c ; cp ../../c/alloc.c .
+rm expeditor.c ; cp ../../c/expeditor.c .
+rm externs.h ; cp ../../c/externs.h .
+rm fasl.c ; cp ../../c/fasl.c .
+rm flushcache.c ; cp ../../c/flushcache.c .
+rm foreign.c ; cp ../../c/foreign.c .
+rm gc-ocd.c; cp ../../c/gc-ocd.c .
+rm gc-oce.c; cp ../../c/gc-oce.c .
+rm gc.c ; cp ../../c/gc.c .
+rm gcwrapper.c ; cp ../../c/gcwrapper.c .
+rm globals.h ; cp ../../c/globals.h .
+rm i3le.c ; cp ../../c/i3le.c .
+rm intern.c ; cp ../../c/intern.c .
+rm io.c ; cp ../../c/io.c .
+rm itest.c ; cp ../../c/itest.c .
+rm new-io.c ; cp ../../c/new-io.c .
+rm number.c ; cp ../../c/number.c .
+rm prim.c ; cp ../../c/prim.c .
+rm prim5.c ; cp ../../c/prim5.c .
+rm print.c ; cp ../../c/print.c .
+rm scheme.c ; cp ../../c/scheme.c .
+rm schlib.c ; cp ../../c/schlib.c .
+rm schsig.c ; cp ../../c/schsig.c .
+rm segment.c ; cp ../../c/segment.c .
+rm segment.h ; cp ../../c/segment.h .
+rm sort.h ; cp ../../c/sort.h .
+rm statics.c ; cp ../../c/statics.c .
+rm stats.c ; cp ../../c/stats.c .
+rm symbol.c ; cp ../../c/symbol.c .
+rm system.h ; cp ../../c/system.h .
+rm thread.c ; cp ../../c/thread.c .
+rm thread.h ; cp ../../c/thread.h .
+rm types.h ; cp ../../c/types.h .
+rm version.h ; cp ../../c/version.h .

@@ -1,0 +1,766 @@
+9.4 changes:
+- updated version to 9.4
+    bintar README NOTICE makefiles/Mf-install.in scheme.1.in
+    c/Makefile.i3nt c/Makefile.a6nt c/Makefile.ti3nt c/Makefile.ta6nt
+    mats/bldnt.bat workarea c/scheme.rc s/7.ss s/cmacros.ss
+    release_notes/release_notes.stex csug/csug.stex
+- added missing include
+    killme.c
+- added new mat verifying that primitives raise exceptions for invalid
+  arguments based on primdata.ss signatures.  fixed some of those
+  signatures, which weren't otherwise used except for arity checking.
+  fixed some issues turned up by the test with who reports errors
+  and how.
+    primdata.ss, 5_1.ss, 7.ss, compile.ss, cpnanopass.ss, fasl.ss,
+    interpret.ss, io.ss, record.ss, syntax.ss,
+    primvars.ms, 5_1.ms, 7.ms, 8.ms, record.ms, mats/Mf-base,
+    root-experr*, patch*
+- string comparisons (string=?, string-ci<?, etc.) now get out fast
+  when handed eq arguments.
+    5_4.ss
+- changed representation of most-negative iptr, I32, and I64 to make
+  Visual C compiler happy.  updated windows make files, which had
+  fallen out of date.  added missing hsrc= files sort.h and thread.h
+  so they show up in the Windows workarea c directory.
+    cmacros.ss,
+    fasl.c, number.c, c/Mf-base, c/Makefile.{t,}{i3,a6}nt
+- The scheme.h definition of Sfixnum(x) now uses multiply rather than
+  left shift to avoid counting on the behavior of << on negative numbers,
+  which is undefined in C.
+    mkheader.ss
+- Fixed a couple of casts, one harmless and the other causing
+  Sinteger64_value to return 0 for the most-negative I64 on 32-bit
+  builds.
+    number.c
+- The configure-generated Makefile distclean target no longer removes
+  zlib and nanopass, since they are logically part of the git clone.
+  It does run make distclean in zlib.
+    makefiles/Makefile.in
+- converted s_test_schlib shifts of -1 to equivalent shifts of 1 to
+  avoid undefined left-shift behavior on negative numbers.
+    prim5.c
+- added if(---) {} wrapper around call to WRITE in display macro to
+  silence unused return-value warnings.
+    prim5.c
+- liberalized get-mode check for ../mats.  it's not our business whether
+  people make their directories group and/or other writeable.
+    6.ms
+- make test now prints the actual relative path to summary in the
+  "check summary" message, whether invoked from the top-level directory
+  or from the workarea.
+    Makefile.in, Makefile-workarea.in
+- configure now just uses cat to copy Makefile-workarea.in to $w/workarea,
+  since the file is presently the same regardless of the configuration.
+    configure
+- fixed time-utc->date test in mat time&date-printing to work regardless of
+  what locale (and time zone) the host machine has set.
+    date.ms
+- fixed date->time-utc to honor the zone-offset field when converting a date
+  object to a time-utc object.
+    stats.c,
+    date.ms
+- fixed incorrect handling of library-extension when searching wpo files
+    compile.ss,
+    7.ms
+- modified floatify_normalize to properly round denormalized results.
+  obviated scale_float in the process.
+    number.c,
+    ieee.ms
+- fixed 0eNNNN for large NNNN to produce 0.0 rather than infinity
+    strnum.ss,
+    5_3.ms
+- the reader now raises an exception with condition type implementation
+  restriction (among the other usual lexical condition types), and
+  string->number now raises #f, for #e<m>@<a>, where <m> and <a> are
+  nonzero integers, since Chez Scheme can't represent polar numbers other
+  than 0@<n> and <n>@0 exactly.  <m>@<a> still produces an inexact result,
+  i.e., we're still extending the set of inexact numeric constants beyond
+  what R6RS dictates.  doing this required a rework of $str->num, which
+  turned into a fairly extensive rewrite that fixed up a few other minor
+  issues (like r6rs:string->number improperly allowing 1/2e10) and
+  eliminated the need for consumers to call $str->num twice in cases
+  where it can actually produce a number.  added some related new tests,
+  including several found missing by profiling.  added a couple of
+  checks to number->string the absence of which was causing argument
+  errors to be reported by other routines.
+    strnum.ss, exceptions.ss, read.ss
+    5_3.ms, 6.ms, root-experr*, patch*
+- added pdtml flag, which if set to t causes profile-dump-html to be
+  called at the end of a mat run.
+    mats/Mf-base
+- compile-whole-program and compile-whole-library now copy the hash-bang
+  line from the wpo file (if it has one) to the object file.
+    compile.ss,
+    7.ms
+- stex is now a submodule.  csug/Makefile and release_notes/Makefile
+  set and use the required Scheme and STEXLIB variables accordingly.
+  they default the machine type to a6le, but this can be overridden
+  and is by the generated top-level Makefile.  the generated top-level
+  Makefile now has a new docs target that runs make in both csug and
+  release_notes, and an updated distclean target that cleans the same.
+  the annoying csug Makefile .fig.pdf rule redefinition is now gone.
+  copyright.stex and csug.stex now list May 2016 as the revision month
+  and date; this will have to be updated for future releases.
+    configure, makefiles/Makefile.in,
+    csug/Makefile, copyright.stex, csug.stex,
+    release_notes/Makefile
+- added custom install options.  workarea creates an empty config.h,
+  and configure creates a config.h that sets the default scheme heap
+  path and scheme-script name based on the actual configuration.
+    configure, newrelease, workarea, checkin,
+    c/Mf-base, scheme.c, main.c,
+    Mf-install.in
+- renamed the installed example directory from lib to examples.
+    Mf-install.in,
+    scheme.1.in
+- added force option to gzip during man page install to prevent gzip from
+  asking for permission to overwrite existing man page files.
+    Mf-install.in
+- removed ~/lib/csv%v/%m from the default scheme heap path on unix-like
+  systems.  documented inclusion of %x\..\..\boot\%m in the Windows
+  default scheme heap path.
+    main.c,
+    use.stex
+- added new configuration options: --installbin, --installlib,
+  --installschemename, --installpetitename, and --installscriptname.
+    configure
+- updated the example library link to the nanopass framework.
+    CONTRIBUTING.md
+- now cleaning up petite.1 and scheme.1 left behind by make install
+    Makefile-workarea.in, checkin
+- now removing workarea after cleaning csug and release_notes so
+  Mf-stex (included from csug/Makefile and release_notes/Makefile)
+  doesn't complain trying to determine the machine type.
+    Makefile.in
+- added installsh support for --ifdiff so the csug make file can use it
+  for the install target.
+    installsh,
+    csug/Makefile
+- added instructions for building (cross-compiling) a boot file for
+  a supported machine type for which a boot file is not built by default.
+    BUILDING
+- corrected CHEZSCHEMELIBS and CHEZSCHEMEEXTS index entries to be
+  CHEZSCHEMELIBDIRS and CHEZSCHEMELIBEXTS.
+    use.stex
+- updated to curl stex version 1.2.1
+    configure
+- updated the fix to S_mktime to work on windows.  the struct tm
+  structure on windows does not have the tm_gmtoff field used in the
+  mac and linux version of the code.
+    stats.c
+- updated the Windows makefiles for building and testing to remove links for
+  files that no longer exist, which was getting in the way of creating links
+  for files that do exist.  Also updated the build batch file for Windows to
+  compile the nanopass framework separately before building the rest of the
+  scheme compiler and libraries.
+    s/Mf-{a6,i3,ta6,ti3}nt, s/bldnt.bat,
+    mats/Mf-{a6,i3,ta6,ti3}nt
+- updated the read me to include a link to the Chez Scheme project page.
+    README.md
+- fixed embarrassing typo in read me.
+    README.md
+- profiler's html output refresh: mark the files as HTML5 rather
+  than HTML4; use target attributes rather than onclick events to
+  open links in specific windows; add a missing table row element;
+  replace the deprecated name attribute with an id attribute (and
+  replace the anchors with spans); and replace the deprecated valign
+  attribute with a style attribute.
+    pdhtml.ss
+
+9.4.1 changes:
+- updated version to 9.4.1
+    bintar BUILDING NOTICE makefiles/Mf-install.in scheme.1.in
+    c/Makefile.i3nt c/Makefile.a6nt c/Makefile.ti3nt c/Makefile.ta6nt
+    mats/bldnt.bat workarea c/scheme.rc s/7.ss s/cmacros.ss
+    release_notes/release_notes.stex csug/csug.stex
+- updated newrelease to produce the correct log-entry format and
+  fixed the existing 9.4.1 log entry
+    newrelease, LOG
+- replaced a couple of tabs
+    number.c
+- updated the descriptions of statistics and related functions to
+  reflect the Version 9.3.1 change from sstats structures to sstats
+  records, with sstats times represented as time objects and sstats
+  bytes and counts represented as exact integers; also updated the
+  sstats-difference description to reflect that it no longer coerces
+  negative differences to zero.  added a corresponding release note.
+    system.stex,
+    release_notes.stex
+- added a cast to eliminate a warning
+    c/number.c
+- fixed bug in Windows version of directory-separator-predicate when
+  path-* procedures are passed a path that is not a string.
+    s/6.ss
+- fixed bug in cp0 on Windows with $foreign-wchar?.
+    s/cp0.ss
+- Cygwin is now used on Windows, updated mats, eliminated unused killme
+    BUILDING c/*nt c/Mf-base c/scheme.exe.manifest configure
+    examples/Makefile mats/6.ms mats/Mf-* mats/foreign.ms mats/ftype.ms
+    mats/patch-* mats/windows.ms s/Mf-*nt s/Mf-base workarea
+    release_notes.stex
+- fixed spelling of non-existent
+    s/syntax.ss
+- now forcing zlib configuration before compiling files that depend on
+  the zlib header files, since zlib's configure script can modify the
+  header files.  removed ZlibInclude variable, which no longer serves
+  a purpose.
+    c/Mf-*, c/Makefile.*nt
+- removed unnecessary datestamp.c target
+    c/Mf.*nt
+- fixed unnessesary blocking in expeditor on Windows. 
+    c/expeditor.c
+- eliminated a couple of thread-safety issues and limitations on the
+  sizes of pathnames produced by expansion of tilde (home-directory)
+  prefixes by replacing S_pathname, S_pathname_impl, and S_homedir
+  with S_malloc_pathname, which always mallocs space for the result.
+  one thread-safety issue involved the use of static strings for expanded
+  pathnames and affected various file-system operations.  the other
+  affected the file open routines and involved use of the incoming
+  pathname while deactivated.  the incoming pathname is sometimes if not
+  always a pointer into a Scheme bytevector, which can be overwritten if a
+  collection occurs while the thread is deactivated.  the size limitation
+  corresponded to the use of the static strings, which were limited to
+  PATH_MAX bytes.  (PATH_MAX typically isn't actually the maximum path
+  length in contemporary operating systems.)  eliminated similar issues
+  for wide pathnames under Windows by adding S_malloc_wide_pathname.
+  consumers of the old routines have been modified to use the new
+  routines and to free the result strings.  the various file operations
+  now consistently treat a pathname with an unresolvable home directory
+  as a pathname that happens to start with a tilde.  eliminated unused
+  foreign-symbol binding of "(cs)pathname" to S_pathname.
+    io.c, externs.h, new_io.c, prim5.c, scheme.c, prim.c
+- various places where a call to close or gzclose was retried when
+  the close operation was interrupted no longer do so, since this can
+  cause problems when another thread has reallocated the same file
+  descriptor.
+    new_io.c
+- now using vcvarsall type x86_amd64 rather than amd64 when the
+  former appears to supported and the latter does not, as is the
+  case with VS Express 2015.
+    c/Mf-a6nt, c/Mf-ta6nt
+- commented out one of the thread mats that consistently causes
+  indefinite delays under Windows and OpenBSD due to starvation.
+    thread.ms
+- increased wait time for a couple of subprocess responses
+    6.ms
+- added call to collector to close files opened during iconv mats
+  specifically for when mats are run under Windows with no iconv dll.
+    io.ms
+- fixed typo: VC/bin/vcvars64.bat => VC/bin/amd64/vcvars64.bat
+    c/Mf-a6nt, c/Mf-ta6nt
+- scheme_mutex_t now uses volatile keyword for owner and count fields
+  because these fields can be accessed from multiple threads
+  concurrently. Updated $yield and $thread-check in mats/thread.ms to
+  be more tolerant of timing variability.
+    c/types.h, mats/thread.ms, release_notes.stex
+- fixed three instances of unchecked mallocs reported by laqrix in
+  github issue #77.
+    io.c, schlib.c, thread.c
+- continue the profiler's html output refresh: refine the styling
+  (and palette) and update CSUG to match. update the CSUG screenshots
+  to reflect the refined look.
+    s/pdhtml.ss
+    csug/system.stex 
+    csug/canned/profilehtml-orig.png
+    csug/canned/profilehtml.png
+    csug/canned/fatfibhtml-orig.png
+    csug/canned/fatfibhtml.png
+- add unicode support to the expression editor.  entry and display now work
+  except that combining characters are not treated correctly for
+  line-wrapping.  this addresses github issue #32 and part of issue #81.
+    c/expeditor.c, s/expeditor.ss
+- moved s_ee_write_char function within the WIN32 check to allow the unicode
+  change to compile on windows.  unicode is not yet supported in the windows
+  version of the repl.
+    c/expeditor.c
+- reworked the S_create_thread_object to print an error and exit when
+  allocating the thread context fails from Sactivate_thread.  before
+  this change, the error was raised on the main thread, which resulted
+  in strange behavior at best.  also added who argument to
+  S_create_thread_object to allow it to report either Sactivate_thread
+  or fork-thread led to the error.
+    externs.h, schsig.c, scheme.c, thread.c
+- fixed a bug in cpvalid resulting in it leaving behind a cpvalid-defer
+  form for later passes to choke on.  also fixed cp0 to print the correct
+  name for cpvalid when it does this.
+    cpvalid.ss, cp0.ss,
+    misc.ms
+- updated the prototype for s_ee_write_char to match the definition
+    expeditor.c
+- fixed a side-effect preservation bug with non-trivial test-context
+  not-like patterns.
+    cp0.ss,
+    cp0.ms, 4.ms
+- instead of default-exception handler, new-cafe establishes a handler
+  that calls the current value of base-exception-handler so the handler
+  can be overridden, as we do in our own make files.
+    cafe.ss,
+    7.ms
+- fixed a bug in case and exclusive-cond syntax-error calls causing an
+  exception in syntax-error instead of the intended error message.
+    syntax.ss
+- added tests for the case and exclusive-cond syntax-error calls
+    4.ms, root-experr-compile-0-f-f-f
+- added print-extended-identifiers parameter.  when #t, symbols like
+  1+ and +++ print without escapes.
+    priminfo.ss, print.ss,
+    6.ms
+- added descriptions of print-extended-identifiers to the user's guide
+  and release notes.  updated the release notes to account for a couple
+  of other log entries.
+    release_notes.stex,
+    intro.stex, io.stex
+- updated the sockets example to work with the current version of Chez.
+  Change the foreign procedure definitions to use the more portable int
+  rather than integer-32.  Switch to a custom port
+  [make-custom-binary-input/output-port] rather than a generic port
+  [make-input/output-port], which resulted in deleting quite a bit of
+  code.  Fix various compiler warnings in the C code, and along the way,
+  fix a signedness bug in c_write that could have resulted in not writing
+  the full buffer (but reporting that it did) in the case of errors from
+  write.
+    examples/csocket.c, examples/socket.ss
+- use high-precision clock time on Windows 8 and up
+    c/stats.c
+- fixed profiling code that keyed profiling locations off of only the
+  bfp to instead key off of both the bfp and efp.
+    pdhtml.ss
+- added Windows installer using the WiX Toolset
+    BUILDING, install/* (new)
+- fix typo in ordinal format for 12
+    format.ss,
+    format.ms
+- renamed install directory to wininstall to avoid conflict with
+  top-level Makefile
+    BUILDING, install/* (removed), wininstall/* (new)
+- updated zlib to version 1.2.11
+    configure
+- added procedure-arity-mask to report the allowed argument counts of
+  a compiled function.  On a procedure from interpret or from one of
+  the trace procedures or syntactic forms, procedure-arity-mask
+  may report counts that are not actually allowed by the source
+  procedure.
+    cmacros.ss, compile.ss, cpnanopass.ss, mkheader.ss, primdata.ss,
+    prims.ss, strip.ss,
+    fasl.c, gc.c, globals.h, prim.c, prim5.c, scheme.c, schsig.c,
+    misc.ms, root-experr*,
+    objects.stex
+- for non-win32 systems, now setting al register to a count of the
+  floating-point register arguments as required for varargs functions
+  by the System V ABI.
+    x86_64.ss,
+    foreign.ms
+- added a missing quote mark in new printf mat Windows case
+    foreign.ms
+- added travis-ci automation script and a 'partialx' testing target to
+  allow us to perform more than a single run of testing without running
+  afoul of travis-ci's 50-minute build timeout.  'partialx' tests six
+  of the twelve configurations tested by 'allx'.
+     .travis.yml (new),
+     mats/Mf-base
+- paired the 'partialx' down to just four test configurations, with one
+  interpreter run, to try to get the threaded builds into line with
+  travis-ci's timeout.
+     mats/Mf-base
+- eliminated some direct assumptions that a vector's type/length field
+  is a fixnum and added meta-asserts to verify that it is in a couple of
+  others, to facilitate future changes to vector typing.  vectors are
+  now treated essentially like fxvectors, strings, and bytevectors.
+    cmacros.ss, cpnanopass.ss, prims.ss, mkheader.ss,
+    alloc.c, gc.c, scheme.c
+- fixed a few comments to refer to scheme.c rather than main.c
+    externs.h, globals.h, thread.c
+- for 64-bit Windows systems, now copying foreign-procedure
+  double-precision floating-point register arguments to integer
+  registers as required for varargs functions. Windows does not
+  support single-precision floating-point arguments as varargs.
+    foreign.ms, np-languages.ss, x86_64.ss
+- added an optional timeout argument to condition-wait
+    externs.h, stats.c, thread.c, thread.h, csug/threads.stex,
+    primvars.ms, thread.ms, release_notes.stex,
+    date.ss, primdata.ss, prims.ss
+- added immutable strings, vectors, fxvector, bytevectors, and boxes
+    5_4.ss, 5_6.ss, bytevector.ss, cmacros.ss, cpnanopass.ss,
+    fasl.ss, library.ss, mkheader.ss, primdata.ss, prims.ss,
+    externs.h, types.h, alloc.c, fasl.c, gc.c, scheme.c,
+    5_5.ms, 5_6.ms, bytevector.ms, misc.ms, root-experr*
+    objects.stex
+- various tweaks to the immutable object support; also taught cp0
+  to simplify ($fxu< (most-positive-fixnum) e) => (fx< e 0) so we
+  don't have any incentive in special casing length checks where
+  the maximum length happens to be (most-positive-fixnum).
+    5_4.ss, 5_6.ss, bytevector.ss, cmacros.ss, cp0.ss, cpnanopass.ss,
+    mkheader.ss, primdata.ss, prims.ss,
+    fasl.c, gc.c, types.h
+    root-experr*, patch*
+- generated bytevector=? procedure now gets out quickly on eq
+  arguments.  cp0 optimizes away a number of additional equality
+  operations at optimize-level 3 (including bytevector=?) when
+  applied to the same variable references, as it already did for
+  eq?, eqv?, and equal?, at all optimize levels.
+    cpnanopass.ss, cp0.ss, primdata.ss,
+    cp0.ms
+- updated bullyx patches
+    patch*
+- updated release notes and tweaked user's guide.
+    release-notes.stex, objects.stex
+- fixed typo: fxvector-immutable-flag used in place of
+  bytevector-immutable-flag in computation of type-immutable-bytevector
+    cmacros.ss
+- reallocated typed-object types, using previously unused tag #b010
+  for strings and giving bytevectors both #b001 and #b101 (the
+  latter for immutable bytevectors) so that the maximum bytevector
+  length on 32-bit machines is once again the most-positive fixnum.
+  treating bytevectors rather than strings or fxvectors (or even
+  vectors) special in this regard is appropriate since the maximum
+  number of bytes in a bytevector is maximum-length x 1 rather than
+  maximum-length x 4 for strings, fxvectors, and vectors on 32-bit
+  machines.  with this change on 32-bit machines, a vector can
+  occupy up to 1/2 of virtual memory, strings and fxvectors 1/4,
+  and bytevectors 1/8.
+    cmacros.ss
+- added record-type-equal-procedure, record-type-hash-procedure,
+  record-equal-procedure, and record-hash-procedure to enable
+  per-type customization of the behavior of equal? and equal-hash
+  for a record value
+     5_1.ss, newhash.ss, primdata.ss,
+     record.ms, root-experr*,
+     objects.stex
+- adding dropped changes
+    record.ss,
+    root-experr*
+- added entry for record-type-equal-procedure and friends
+    release_notes.stex
+- changed copyright year to 2017
+    7.ss, scheme.1.in, comments of many files
+- expanded the CSUG description of the handling of command-line
+  arguments not recognized as standard options and added a description
+  of the same to the COMMAND-LINE OPTIONS section of the man page.
+  did a bit of minor cleanup elsewhere in the man page.
+    use.stex, scheme.1.in
+- destroy_thread now processes guardian entries
+    thread.c, 4.ms, release_notes.stex
+- mutexes and conditions are now freed when no longer used via
+  $close-resurrected-mutexes&conditions, $keep-live primitive added
+    externs.h, prim5.c, thread.c, 4.ms, thread.ms, release_notes.stex,
+    7.ss, cpnanopass.ss, np-languages.ss, primdata.ss, prims.ss
+- fix reduction for map and for-each with optimization level 3
+  to drop the expression, check that procedure has the correct
+  arity and is discardable or unsafe.
+  Also add a simplification for for-each with empty lists
+  with optimization level 2.
+    cp0.ss, 4.ms, primdata.ss
+- fix invalid memory reference when enum-set-indexer procedure is not
+  passed a symbol
+    enum.ss, enum.ms, root-experr*, release_notes.stex
+- fix overflow detection for fxsll, fxarithmetic-shift-left, and
+  fxarithmetic-shift
+    library.ss, fx.ms, release_notes.stex
+- added ephemeron pairs and changed weak hashtables to use
+  ephemeron pairs for key--value mapping to avoid the key-in-value
+  problem
+    prims.ss, primdata.ss, newhash.ss, fasl.ss, mkheader.ss
+    cmacro.ss, prim5.c, fasl.c, gc.c, gcwrapper.c, types.h,
+    4.ms, hash.ms, objects.stex, smgmt.stex, csug.bib
+- check_dirty_ephemeron now puts ephemerons whose keys haven't yet
+  been seen on the pending list rather than the trigger lists.
+    gc.c
+- removed scan of space_ephemeron from check_heap because check_heap
+  as written can't handle the two link fields properly.
+    gcwrapper.c
+- in the ephemerons mat that checks interaction between mutation and
+  collection, added generation arguments to the first two collect
+  calls so they always collect into the intended generation.
+    4.ms
+- updated allx and bullyx patches
+    patch*
+- fix strip-fasl-file for immutable strings and vectors,
+  fix an $oops call, and fix a vector-index increment in hashing
+    strip.ss, 7.ss, newhash.ss, misc.ms
+- fix signature of fxbit-set?
+    primdata.ss
+- more optimizations for map and for-each with explicit list
+  extend the reductions for map and for-each when the arguments are
+  explicit lists like (list 1 2 3 ...) or '(1 2 3 ...). 
+    cp0.ss,
+    4.ms
+- reverted to the preceding version of cp0 due to failure to preserve
+  the expected evaluation order in one of the mats; removed the
+  corresponding equivalent-expansion tests.
+    cp0.ss,
+    4.ms
+- restored the map and for-each optimizations with a fix for the
+  evaluation-order bug.
+    cp0.ss,
+    4.ms
+- added date-dst? to access the previously-hidden DST information in
+  date records, and added date-zone-name to provide a time zone name.
+    date.ss, primdata.ss,
+    stats.c,
+    date.ms, root-experr*, patch-compile*,
+    system.stex
+- fixed a bug in flonum-extractor, which on 64-bit machines was using an
+  8-byte read instead of a 4-byte read to pick up the 4 highest-order
+  bytes of a little-endian flonum, potentially reading past the end of
+  mapped memory for flonums produced by taking the imaginary part of an
+  inexact complexnum (which, unlike other flonums, are not aligned on
+  16-byte boundaries).  The 8-byte load would also have failed to produce
+  correct results on 64-bit big-endian machines (of which we presently
+  have none) because the offsets passed to flonum-extractor assume the
+  bits are in the lowest-order 4 bytes of the extracted field.
+    cp0.ss,
+    misc.ms,
+    release_notes.stex
+- support Windows build on Bash/WSL
+    BUILDING, configure, workarea, c/vs.bat (new), mats/vs.bat (new),
+    c/Mf-*nt, mats/Mf-*, s/Mf-base
+- fix c/version.h for FreeBDS (machine types i3fb, ti3fb, a6fb, ta6fb)
+- fix reference to libc.so to be libc.so.7 for FreeBSD (machine types
+  i3fb, ti3fb, a6fb, ta6fb)
+    foreign.ms
+- added CC option to configure for selecting the compiler
+    configure,
+    c/Mf-*
+- Suppress warnings from implicit fallthrough in case labels.
+    Mf-{a6,arm32,i3,ppc,ta6,ti3,tpp32}le
+- added bytevector-compress and bytevector-uncompress
+    bytevector.ss, primdata.ss, new-io.c, prim5.c, externs.h,
+    objects.stex, release_notes.stex,
+    bytevector.ms, root-experr*
+- fixed typo in S_abnormal_exit
+    schsig.c
+- don't remove the pariah form in the cp0 pass
+    cp0.ss,
+    misc.ms
+- revert use of ephemerons in weak hashtables, add ephemeron
+  hashtables
+    newhash.ss, hashtable-types.ss, library.ss, primdata.ss,
+    fasl.ss, fasl.c, gc.c, globals.h,
+    hash.ms, objects.stex, release_notes.stex
+- fixed pariah mat
+    misc.ms
+- minor wordsmithing and fix for an overfull hbox
+    objects.stex, system.stex
+- fix (define-values () ....) to expand to a definition
+    syntax.ss, 3.ms
+- added optional line and column components to a source object, a
+  locate-source-object-source function that uses the new components,
+  a current-locate-source-object-source parameter to control looking up
+  line and column information, a current-make-source-object parameter to
+  control loation recording, an optional use-cache argument to
+  locate-source, and a 'source-object message for code and continuation
+  inspectors
+    read.ss, syntax.ss, 7.ss, compile.ss, cpnanopass.ss, exceptions.ss,
+    inspect.ss, primdata.ss, prims.ss, print.ss, cmacros.ss, types.ss,
+    mat.ss, 8.ms, root-experr*,
+    syntax.stex, debug.stex, system.stex, release_notes.stex
+- fixed broken mats on Windows caused by Bash/WSL changes
+    7.ms, ftype.ms
+- added "ez-grammar" example program
+    examples/ez-grammar.ss, examples/ez-grammar-test.ss,
+    examples/Makefile, examples.ms
+- updated ez-grammar-test to write temp files to current directory and delete them when finished
+    examples/ez-grammar-test.ss
+- added support for Microsoft Visual Studio 2017 on Windows
+    BUILDING, c/Mf-a6nt, c/Mf-ta6nt, c/vs.bat,
+    mats/Mf-a6nt, mats/Mf-ta6nt, mats/ftype.ms
+- added support for building Windows installs with Bash/WSL
+    wininstall/Makefile, candle.bat, light.bat
+- added support for building with Visual Studio 2017's BuildTools
+    c/vs.bat
+- check for git before using to get submodules
+    configure
+- fixed windows installer failure when vcredist is not preinstalled by
+  using the vcredist merge module, split the 32 and 64 bit MSIs and
+  added a wix bundle to combine the MSIs into a single exe installer,
+  added a batch script for locating Visual Studio's vcredist merge
+  modules, updated installer paths and names.
+    wininstall/*
+- fixed np-normalize-context pass to process trivs list in mvset forms
+  in tail and predicate context and added regression tests.  Thanks to
+  @marcomaggi for reporting the bug and @yjqww6 for providing a
+  simplified test and finding the initial solution.
+    cpnanopass.ss,
+    3.ms
+- removed a useless check in foreign-alloc
+    record.ss
+- fix cp0 reduction of fx[+-*]/carry and their signatures
+    cp0.ss
+    primdata.ss
+    fx.ms
+- renamed s_gettime => S_gettime to remain consistent with the
+  convention that the only undocumented externs are prefixed with
+  S_.
+    externs.h, stats.c, thread.c
+- added version number to scheme.1.in trailer; updated date.
+    scheme.1.in, newrelease
+- removed version update of no-longer-existing bldnt.bat.  "fixed"
+  sed patterns to replace \? with * for the benefit of the deficient
+  mac sed.
+    newrelease
+
+9.5 changes:
+- updated version to 9.5
+    bintar BUILDING NOTICE makefiles/Mf-install.in scheme.1.in
+    c/Makefile.i3nt c/Makefile.a6nt c/Makefile.ti3nt c/Makefile.ta6nt
+    workarea c/scheme.rc s/7.ss s/cmacros.ss
+    release_notes/release_notes.stex csug/csug.stex
+- updated release notes and fixed user's guide overfull hbox.
+    release-notes.stex, syntax.stex
+- updated install target to do something more sensible
+    release_notes/Makefile
+
+9.5.1 changes:
+- updated version to 9.5.1
+    bintar BUILDING NOTICE makefiles/Mf-install.in scheme.1.in
+    c/Makefile.i3nt c/Makefile.a6nt c/Makefile.ti3nt c/Makefile.ta6nt
+    workarea c/scheme.rc s/7.ss s/cmacros.ss
+    release_notes/release_notes.stex csug/csug.stex csug/use.stex
+    examples/ez-grammar-test.ss examples/socket.ss
+    wininstall/Makefile wininstall/*nt.wxs
+- Added setting of CHEZSCHEMELIBDIRS to s and mats make files so that
+  an existing setting will not interfere with the build process, and
+  added a note to BUILDING that CHEZSCHEMELIBDIRS should be unset in
+  Version 9.5 and before.
+    s/Mf-base, mats/Mf-base, BUILDING
+- the $case macro used by r6rs:case and case now unconditionally trims
+  redundant keys and expands into exclusive-cond rather than cond.
+  it catches references to => before expanding into exclusive-cond
+  to avoid supporting => as an undocumented and useless extension
+  of the case syntax.  the r6rs:case and case macros now require
+  multiple clauses rather than leaving the enforcement to exclusive-cond,
+  and the exclusive-cond macro now requires multiple clauses rather
+  than leaving the enforcement to cond.
+    syntax.ss,
+    4.ms, root-experr*, patch*
+- ifdef'd out include of xlocale.h for glibc, since the glibc
+  locale.h includes xlocale.h or, in glibc 2.26, its replacement.
+    expeditor.c
+- Updated CSUG to replace \INSERTREVISIONMONTHSPACEYEAR with the current
+  month and year at the time of generation.
+    csug.stex, copyright.stex
+- Updated configuration to set machine types in the CSUG and release notes 
+  make files, and updated distclean target to remove these files.
+    configure, makefiles/Makefile-csug.in (renamed from csug/Makefile),
+    makefiles/Makefile-release_notes.in
+      (renamed from release_notes/Makefile),
+    makefiles/Makefile
+- added pass-time tracking for pre-cpnanopass passes to compile.
+    compile.ss
+- added inline handler for fxdiv-and-mod
+    cp0.ss, primdata.ss
+- changed order in which return-point operations are done (adjust
+  sfp first, then store return values, then restore local saves) to
+  avoid storing return values to homes beyond the end of the stack
+  in cases where adjusting sfp might result in a call to dooverflood.
+    cpnanopass.ss, np-languages.ss
+- removed unused {make-,}asm-return-registers bindings
+    cpnanopass.ss
+- corrected the max-fv value field of the lambda produced by the
+  hand-coded bytevector=? handler.
+    cpnanopass.ss
+- reduced live-pointer and inspector free-variable mask computation
+  overhead
+    cpnanopass.ss
+- moved regvec cset copies to driver so they aren't copied each
+  time a uvar is assigned to a register.  removed checks for
+  missing register csets, since registers always have csets.
+    cpnanopass.ss
+- added closure-rep else clause in record-inspector-information!.
+    cpnanopass.ss
+- augmented tree representation with a constant representation
+  for full trees to reduce the overhead of manipulating trees or
+  subtress with all bits set.
+    cpnanopass.ss
+- tree-for-each now takes start and end offsets; this cuts the
+  cost of traversing and applying the action when the range of
+  applicable offsets is other than 0..tree-size.
+    cpnanopass.ss
+- introduced the notion of poison variables to reduce the cost of
+  register/frame allocation for procedures with large sets of local
+  variables.  When the number of local variables exceeds a given
+  limit (currently hardwired to 1000), each variable with a large
+  live range is considered poison.  A reasonable set of variables
+  with large live ranges (the set of poison variables) is computed
+  by successive approximation to avoid excessive overhead.  Poison
+  variables directly conflict with all spillables, and all non-poison
+  spillables indirectly conflict with all poison spillables through
+  a shared poison-cset.  Thus poison variables cannot live in the
+  same location as any other variable, i.e., they poison the location.
+  Conflicts between frame locations and poison variables are handled
+  normally, which allows poison variables to be assigned to
+  move-related frame homes.  Poison variables are spilled prior to
+  register allocation, so conflicts between registers and poison
+  variables are not represented.  move relations between poison
+  variables and frame variables are recorded as usual, but other
+  move relations involving poison variables are not recorded.
+    cpnanopass.ss, np-languages.ss
+- changed the way a uvar's degree is decremented by remove-victim!.
+  instead of checking for a conflict between each pair of victim
+  and keeper and decrementing when the conflict is found, remove-victim!
+  now decrements the degree of each var in each victim's conflict
+  set.  while this might decrement other victims' degrees unnecessarily,
+  it can be much less expensive when large numbers of variables are
+  involved, since the number of conflicts between two non-poison
+  variables should be small due to the selection process for
+  (non-)poison variables and the fact that the unspillables introduced
+  by instruction selection should also have few conflicts.  That
+  is, it reduces the worst-case complexity of decrementing degrees
+  from O(n^2) to O(n).
+    cpnanopass.ss
+- took advice in compute-degree! comment to increment the uvars in
+  each registers csets rather than looping over the registers for
+  each uvar asking whether the register conflicts with the uvar.
+    cpnanopass.ss
+- assign-new-frame! now zeros out save-weight for local saves, since
+  once they are explicitly saved and restored, they are no longer
+  call-live and thus have no save cost.
+    cpnanopass.ss
+- desensitized the let-values source-caching timing test slightly
+    8.ms
+- updated allx, bullyx patches
+    patch*
+- attempt to stabilize timing tests let-values source-caching
+  test and ephemeron gc test while resensitizing the former
+    8.ms, 4.ms
+- various formatting and comment corrections
+    workarea,
+    s/Mf-base, bytevector.ss, cpnanopass.ss, date.ss,
+    5_6.ms, examples.ms
+- updated newrelease to handle mats/Mf-*nt
+    newrelease mats/Mf-a6nt mats/Mf-i3nt mats/Mf-ta6nt mats/Mf-ti3nt
+- fixed gather-filedata's sort of profile entries.  for any two
+  entries x and y in the list produced by the sort call, if x's
+  bfp = y's bfp, x should come before y if x's efp < y's efp.
+  The idea is that enclosing entries should always come later
+  in the list.  this affects only languages where two expressions
+  can start at the same character position.
+    pdhtml.ss
+- expanded capability of ez-grammar with support for simpl
+  parsing of binary operators w/precedence and associativity
+  and automatically generated markdown grammar descriptions.
+  ez-grammar-test.ss now also doubles as a test of pdhtml for
+  algebraic languages.
+    mats/examples.ms,
+    examples/ez-grammar.ss, examples/ez-grammar-test.ss,
+    examples/Makefile
+- maybe-compile-{file,program,library} and automatic import
+  compilation now treat a malformed object file as if it were
+  not present and needs to be regenerated.  A malformed object
+  file (particularly a truncated one) might occur if the compiling
+  processes is killed or aborts before it has a chance to delete
+  a partial object file.
+    syntax.ss,
+    7.ms
+- fix signature of bytevector-[u/s]16-native-set!
+    primdata.ss
+- fix enumerate signature 
+    primdata.ss
+- added support for Visual Studio 2017.15.5
+    wininstall/locate-vcredist.bat
+- fixed substring-fill! and vector-fill! to return void, reflecting the
+  documented return value of unspecified value.  Also changes substring-fill!
+  to use define-who instead of repeating 'substring-fill! in all the error
+  messages.
+    5_4.ss, 5_6.ss
+
