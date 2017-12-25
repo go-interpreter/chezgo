@@ -144,6 +144,7 @@ usage:
 (define (bench a b) (mul a b))
 
 (define (run-bench)
+  (collect)
 (do ((runs 0 (+ 1 runs))) ((>= runs 10))
 (do ((sz 500 (+ sz 100)))
     ((>= sz 600))
@@ -241,16 +242,16 @@ Copyright 1984-2017 Cisco Systems, Inc.
 500 x 500 matrix multiply in Chez took 2547 msec
 
 ;; inside the my-matrix library:
-500 x 500 matrix multiply in Chez took 2472 msec
-500 x 500 matrix multiply in Chez took 2474 msec
+500 x 500 matrix multiply in Chez took 2435 msec
+500 x 500 matrix multiply in Chez took 2498 msec
+500 x 500 matrix multiply in Chez took 2486 msec
+500 x 500 matrix multiply in Chez took 2496 msec
 500 x 500 matrix multiply in Chez took 2465 msec
-500 x 500 matrix multiply in Chez took 2423 msec
+500 x 500 matrix multiply in Chez took 2499 msec
+500 x 500 matrix multiply in Chez took 2492 msec
+500 x 500 matrix multiply in Chez took 2532 msec
 500 x 500 matrix multiply in Chez took 2463 msec
-500 x 500 matrix multiply in Chez took 2708 msec
-500 x 500 matrix multiply in Chez took 2569 msec
-500 x 500 matrix multiply in Chez took 2509 msec
-500 x 500 matrix multiply in Chez took 2524 msec
-500 x 500 matrix multiply in Chez took 2530 msec
+500 x 500 matrix multiply in Chez took 2526 msec
 
 |#
 
