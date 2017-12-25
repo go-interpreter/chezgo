@@ -17,7 +17,7 @@ Chez Scheme is fast, mature, incremental, optimizing native code compiler that p
 
 Chez's optimizing compiler works both incrementally (but still does some cross package optimization), as well as providing calls for whole-program compilation and optimization.
 
-Chez is used in Robotic drug testing, Chip layout and design, multithreaded web services, and enterprise systems. Some users include Sandia National Labs, Motorola, Freescale, Beckman Coulter, Disney, University of Indiana (where Dybvig is a professor of Computer Science). It has been in development since 1984 (started on a VAX!).
+Chez is used in Robotic drug testing, Chip layout and design, multithreaded web services, and enterprise systems. Some users include Sandia National Labs, Motorola, Freescale, Beckman Coulter, Disney, University of Indiana (where Dybvig is a professor of Computer Science). It has been in development since 1985 (started on a VAX running BSD Unix), and saw six major commercial releases prior to going open source.
 
 Chez has a generational garbage collector that automatically collects code and data that is no longer in use. Chez includes a debugger, and a full numeric tower.
 
@@ -45,6 +45,26 @@ https://news.ycombinator.com/item?id=13656943
 
 https://www.scheme.com/csug8/binding.html
 
+# documentation
+
+homepage of Chez Scheme
+
+https://www.scheme.com/
+
+user's guide
+
+https://www.scheme.com/csug8/
+
+
+R. Kent Dybvig's classic book, The Scheme Programming Language, 4th edition.
+
+https://www.scheme.com/tspl4/
+
+The open source github repo. Chez is Apache2 licensed.
+
+https://github.com/cisco/ChezScheme
+
+
 notes
 -----
 
@@ -52,13 +72,5 @@ To facilitate this experiment, only the OSX makefiles were used. However
 the Chez Scheme system is portable to linux and Windows; much effort
 appears to have been put into windows compatability in particular.
 
-homepage of Chez Scheme
-https://www.scheme.com/
 
-R. Kent Dybvig's classic book, The Scheme Programming Language, 4th edition.
-https://www.scheme.com/tspl4/
-
-The open source github repo. Chez is Apache2 licensed.
-https://github.com/cisco/ChezScheme
-
-License: Apache 2.
+License: Apache 2, per the underlying Chez scheme license.
