@@ -1,6 +1,16 @@
 chezgo: embed chez scheme in Go
 ======
 
+# use
+
+~~~
+$ make run
+...
+> (+ 10 12)
+22
+> 
+~~~
+
 # rationale
 
 Chez Scheme is fast, mature, incremental, optimizing native code compiler that produces very fast code very quickly. There is also its slower companion, Petite Scheme, a bytecode compiler within the same system, available for those who need extreme portability. Prior to 2016 it was only available for a commercial license fee, but it is now open source.

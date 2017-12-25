@@ -9,5 +9,5 @@ clean:
 scheme: all
 	bin/scheme
 
-run:
+run: all
 	go build && ./chezgo
