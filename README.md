@@ -115,6 +115,24 @@ Copyright 1984-2017 Cisco Systems, Inc.
 500 x 500 matrix multiply in Chez took 3931 msec
 ~~~
 
+Aside: Julia code is about 6 msec. But this is
+a different matrix approach. We know vector
+of vector is suboptimal, but that's what we
+have ready scheme code for.
+~~~
+julia> function myFunc()
+  A = randn(500, 500)
+  B = randn(500, 500)
+  tic()
+  q= A*B
+ return  (toc(), q)
+end
+julia> myFunc()
+elapsed time: 0.006084477 seconds
+500×500 Array{Float64,2}:[-1.7587 25.6692 … 15.5834 27.9475; -15.8463 7.09889 … -2.73291 7.42923; … ; 32.2588 16.9683 … 30.874 -12.7082; 7.07166 -35.805 … -9.39162 25.681])
+~~~
+
+
 notes
 -----
 
