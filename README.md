@@ -71,17 +71,19 @@ turning on full optimization on Chez helped a little
  scheme --optimize-level 3 ./matrix.ss 
 Chez Scheme Version 9.5.1
 Copyright 1984-2017 Cisco Systems, Inc.
+> (import (my-matrix))
+> (run-bench)
+500 x 500 matrix multiply in Chez took 2435 msec
+500 x 500 matrix multiply in Chez took 2498 msec
+500 x 500 matrix multiply in Chez took 2486 msec
+500 x 500 matrix multiply in Chez took 2496 msec
+500 x 500 matrix multiply in Chez took 2465 msec
+500 x 500 matrix multiply in Chez took 2499 msec
+500 x 500 matrix multiply in Chez took 2492 msec
+500 x 500 matrix multiply in Chez took 2532 msec
+500 x 500 matrix multiply in Chez took 2463 msec
+500 x 500 matrix multiply in Chez took 2526 msec
 
-500 x 500 matrix multiply in Chez took 3232 msec
-500 x 500 matrix multiply in Chez took 3244 msec
-500 x 500 matrix multiply in Chez took 3185 msec
-500 x 500 matrix multiply in Chez took 3218 msec
-500 x 500 matrix multiply in Chez took 3202 msec
-500 x 500 matrix multiply in Chez took 3290 msec
-500 x 500 matrix multiply in Chez took 3225 msec
-500 x 500 matrix multiply in Chez took 3190 msec
-500 x 500 matrix multiply in Chez took 3224 msec
-500 x 500 matrix multiply in Chez took 3246 msec
 ~~~
 
 
