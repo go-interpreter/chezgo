@@ -128,7 +128,7 @@
     (fill-random b)
     (let*
         ((t0 (real-time))
-         (tm (bench a b))
+         (blah (mul a b))
          (t1 (real-time)))
       (format #t "~s x ~s matrix multiply in Chez took ~s msec" sz sz (- t1 t0))
       (newline)
@@ -153,5 +153,18 @@ chez scheme timings, on mac book pro:
 500 x 500 matrix multiply in Chez took 4342 msec
 500 x 500 matrix multiply in Chez took 4556 msec
 500 x 500 matrix multiply in Chez took 4258 msec
+
+with (optimize-level 3) we go ~ 10% faster
+
+500 x 500 matrix multiply in Chez took 3865 msec
+500 x 500 matrix multiply in Chez took 3911 msec
+500 x 500 matrix multiply in Chez took 3834 msec
+500 x 500 matrix multiply in Chez took 3870 msec
+500 x 500 matrix multiply in Chez took 3872 msec
+500 x 500 matrix multiply in Chez took 3853 msec
+500 x 500 matrix multiply in Chez took 3822 msec
+500 x 500 matrix multiply in Chez took 3888 msec
+500 x 500 matrix multiply in Chez took 3929 msec
+500 x 500 matrix multiply in Chez took 4098 msec
 
 |#
