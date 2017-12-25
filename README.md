@@ -35,7 +35,7 @@ https://www.cs.indiana.edu/~dyb/pubs/hocs.pdf
 
 # benchmarks
 
-https://ecraven.github.io/r7rs-benchmarks/
+versus other schemes: https://ecraven.github.io/r7rs-benchmarks/
 
 # discussion
 
