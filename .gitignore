@@ -5,3 +5,4 @@ chez_scheme_9.5.1/bin/petite
 *~
 *.o
 chezgo
+cmd/matmul/matmul

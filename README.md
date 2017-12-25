@@ -65,55 +65,47 @@ https://github.com/cisco/ChezScheme
 
 Chez matrix multiplication, in matrix.ss
 
-~~~
-500 x 500 matrix multiply in Chez took 4373 msec
-500 x 500 matrix multiply in Chez took 4311 msec
-500 x 500 matrix multiply in Chez took 4240 msec
-500 x 500 matrix multiply in Chez took 4259 msec
-500 x 500 matrix multiply in Chez took 4220 msec
-500 x 500 matrix multiply in Chez took 4146 msec
-500 x 500 matrix multiply in Chez took 4268 msec
-500 x 500 matrix multiply in Chez took 4216 msec
-500 x 500 matrix multiply in Chez took 4205 msec
-500 x 500 matrix multiply in Chez took 4206 msec
-500 x 500 matrix multiply in Chez took 4182 msec
+turning on full optimization on Chez helped a little
 
+~~~
+ scheme --optimize-level 3 ./matrix.ss 
+Chez Scheme Version 9.5.1
+Copyright 1984-2017 Cisco Systems, Inc.
+
+500 x 500 matrix multiply in Chez took 3232 msec
+500 x 500 matrix multiply in Chez took 3244 msec
+500 x 500 matrix multiply in Chez took 3185 msec
+500 x 500 matrix multiply in Chez took 3218 msec
+500 x 500 matrix multiply in Chez took 3202 msec
+500 x 500 matrix multiply in Chez took 3290 msec
+500 x 500 matrix multiply in Chez took 3225 msec
+500 x 500 matrix multiply in Chez took 3190 msec
+500 x 500 matrix multiply in Chez took 3224 msec
+500 x 500 matrix multiply in Chez took 3246 msec
 ~~~
 
 
 Go matrix multiplication, in cmd/matmul subdir
 ~~~
 go run matmul.go
-500 x 500 matrix multiply in Go took 437 msec
-500 x 500 matrix multiply in Go took 428 msec
-500 x 500 matrix multiply in Go took 454 msec
-500 x 500 matrix multiply in Go took 428 msec
-500 x 500 matrix multiply in Go took 436 msec
-500 x 500 matrix multiply in Go took 451 msec
-500 x 500 matrix multiply in Go took 435 msec
-500 x 500 matrix multiply in Go took 435 msec
-500 x 500 matrix multiply in Go took 438 msec
-500 x 500 matrix multiply in Go took 435 msec
+500 x 500 matrix multiply in Go took 362 msec
+500 x 500 matrix multiply in Go took 360 msec
+500 x 500 matrix multiply in Go took 372 msec
+500 x 500 matrix multiply in Go took 371 msec
+500 x 500 matrix multiply in Go took 382 msec
+500 x 500 matrix multiply in Go took 360 msec
+500 x 500 matrix multiply in Go took 364 msec
+500 x 500 matrix multiply in Go took 364 msec
+500 x 500 matrix multiply in Go took 363 msec
+500 x 500 matrix multiply in Go took 399 msec
+
 ~~~
 
 
-turning on full optimization on Chez only
-helped a little
-~~~
-$ scheme  --optimize-level 3 matrix.ss
-Chez Scheme Version 9.5.1
-Copyright 1984-2017 Cisco Systems, Inc.
 
-500 x 500 matrix multiply in Chez took 3798 msec
-500 x 500 matrix multiply in Chez took 3824 msec
-500 x 500 matrix multiply in Chez took 3855 msec
-500 x 500 matrix multiply in Chez took 3997 msec
-500 x 500 matrix multiply in Chez took 3829 msec
-500 x 500 matrix multiply in Chez took 3869 msec
-500 x 500 matrix multiply in Chez took 3886 msec
-500 x 500 matrix multiply in Chez took 3936 msec
-500 x 500 matrix multiply in Chez took 3931 msec
-~~~
+(Difference from the original: Reversing the inner two (k and j) loops helped some.)
+(see also https://www.reddit.com/r/programming/comments/pv3k9/why_we_created_julia_a_new_programming_language/c3t28nx/)
+
 
 Aside: Julia code is about 6 msec. But this is
 a different matrix approach. We know vector

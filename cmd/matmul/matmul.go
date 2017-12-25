@@ -51,12 +51,13 @@ func mult(m1, m2 *Matrix) (r *Matrix) {
 	nr2 := m2.Nrow
 	nc2 := m2.Ncol
 	for i := 0; i < nr1; i++ {
-		for j := 0; j < nc2; j++ {
-			a := 0.0
-			for k := 0; k < nr2; k++ {
+		for k := 0; k < nr2; k++ {
+			for j := 0; j < nc2; j++ {
+				a := r.Get(i, j)
 				a += m1.Get(i, k) * m2.Get(k, j)
+				r.Set(i, j, a)
 			}
-			r.Set(i, j, a)
+
 		}
 	}
 	return
@@ -98,15 +99,15 @@ func main() {
 /*
 
 go run matmul.go
-500 x 500 matrix multiply in Go took 437 msec
-500 x 500 matrix multiply in Go took 428 msec
-500 x 500 matrix multiply in Go took 454 msec
-500 x 500 matrix multiply in Go took 428 msec
-500 x 500 matrix multiply in Go took 436 msec
-500 x 500 matrix multiply in Go took 451 msec
-500 x 500 matrix multiply in Go took 435 msec
-500 x 500 matrix multiply in Go took 435 msec
-500 x 500 matrix multiply in Go took 438 msec
-500 x 500 matrix multiply in Go took 435 msec
+500 x 500 matrix multiply in Go took 362 msec
+500 x 500 matrix multiply in Go took 360 msec
+500 x 500 matrix multiply in Go took 372 msec
+500 x 500 matrix multiply in Go took 371 msec
+500 x 500 matrix multiply in Go took 382 msec
+500 x 500 matrix multiply in Go took 360 msec
+500 x 500 matrix multiply in Go took 364 msec
+500 x 500 matrix multiply in Go took 364 msec
+500 x 500 matrix multiply in Go took 363 msec
+500 x 500 matrix multiply in Go took 399 msec
 
 */

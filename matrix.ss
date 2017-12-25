@@ -1,4 +1,6 @@
 
+(optimize-level 3)
+
 ;;; reference: https://www.scheme.com/tspl3/examples.html
 
 ;;; make-matrix creates a matrix (a vector of vectors).
@@ -61,23 +63,24 @@
         (let* ((nr1 (matrix-rows m1))
                (nr2 (matrix-rows m2))
                (nc2 (matrix-columns m2))
-               (r   (make-matrix nr1 nc2)))
+               (r   (make-matrix nr1 nc2))
+               (tot 0))
           (if (not (= (matrix-columns m1) nr2))
               (match-error m1 m2))
           (do ((i 0 (+ i 1)))
               ((= i nr1) r)
-            (do ((j 0 (+ j 1)))
-                ((= j nc2))
-              (do ((k 0 (+ k 1))
-                   (a 0
-                      (+ a
-                         (* (matrix-ref m1 i k)
-                            (matrix-ref m2 k j)))))
-                  ((= k nr2)
-                   (matrix-set! r i j a))))))))
+            (do ((k 0 (+ k 1)))
+                ((= k nr2))
+              (do ((j 0 (+ j 1)))
+                  ((= j nc2))
+                (set! tot (matrix-ref r i j))
+                (set! tot (+ tot
+                             (* (matrix-ref m1 i k)
+                                (matrix-ref m2 k j))))
+                (matrix-set! r i j tot)))))))
 
-    ;; type-error is called to complain when mul receives an invalid
-    ;; type of argument.
+  ;; type-error is called to complain when mul receives an invalid
+  ;; type of argument.
     (define type-error
       (lambda (what)
         (error 'mul
@@ -136,35 +139,21 @@
 
 #|
 chez scheme timings, on mac book pro:
+(with (optimize-level 3); as we go ~ 10% faster)
 
-500 x 500 matrix multiply in Chez took 4373 msec
-500 x 500 matrix multiply in Chez took 4311 msec
-500 x 500 matrix multiply in Chez took 4240 msec
-500 x 500 matrix multiply in Chez took 4259 msec
-500 x 500 matrix multiply in Chez took 4220 msec
-500 x 500 matrix multiply in Chez took 4146 msec
-500 x 500 matrix multiply in Chez took 4268 msec
-500 x 500 matrix multiply in Chez took 4216 msec
-500 x 500 matrix multiply in Chez took 4205 msec
-500 x 500 matrix multiply in Chez took 4206 msec
-500 x 500 matrix multiply in Chez took 4182 msec
-500 x 500 matrix multiply in Chez took 4226 msec
-500 x 500 matrix multiply in Chez took 4310 msec
-500 x 500 matrix multiply in Chez took 4342 msec
-500 x 500 matrix multiply in Chez took 4556 msec
-500 x 500 matrix multiply in Chez took 4258 msec
+ scheme --optimize-level 3 ./matrix.ss 
+Chez Scheme Version 9.5.1
+Copyright 1984-2017 Cisco Systems, Inc.
 
-with (optimize-level 3) we go ~ 10% faster
-
-500 x 500 matrix multiply in Chez took 3865 msec
-500 x 500 matrix multiply in Chez took 3911 msec
-500 x 500 matrix multiply in Chez took 3834 msec
-500 x 500 matrix multiply in Chez took 3870 msec
-500 x 500 matrix multiply in Chez took 3872 msec
-500 x 500 matrix multiply in Chez took 3853 msec
-500 x 500 matrix multiply in Chez took 3822 msec
-500 x 500 matrix multiply in Chez took 3888 msec
-500 x 500 matrix multiply in Chez took 3929 msec
-500 x 500 matrix multiply in Chez took 4098 msec
+500 x 500 matrix multiply in Chez took 3232 msec
+500 x 500 matrix multiply in Chez took 3244 msec
+500 x 500 matrix multiply in Chez took 3185 msec
+500 x 500 matrix multiply in Chez took 3218 msec
+500 x 500 matrix multiply in Chez took 3202 msec
+500 x 500 matrix multiply in Chez took 3290 msec
+500 x 500 matrix multiply in Chez took 3225 msec
+500 x 500 matrix multiply in Chez took 3190 msec
+500 x 500 matrix multiply in Chez took 3224 msec
+500 x 500 matrix multiply in Chez took 3246 msec
 
 |#
