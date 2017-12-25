@@ -37,9 +37,6 @@ https://www.cs.indiana.edu/~dyb/pubs/hocs.pdf
 
 versus other schemes: https://ecraven.github.io/r7rs-benchmarks/
 
-# discussion
-
-https://news.ycombinator.com/item?id=13656943
 
 # FFI documentation
 
