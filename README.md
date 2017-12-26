@@ -125,6 +125,19 @@ elapsed time: 0.006084477 seconds
 500×500 Array{Float64,2}:[-1.7587 25.6692 … 15.5834 27.9475; -15.8463 7.09889 … -2.73291 7.42923; … ; 32.2588 16.9683 … 30.874 -12.7082; 7.07166 -35.805 … -9.39162 25.681])
 ~~~
 
+For comparison, using gonum Dense matrices,
+the multiplcation is about 24 msec in Golang.
+See the ./gonum.go file for specifics. So Go
+is about 4x slower than Julia.
+
+Other comparison points: `Gnu octave` using OpenBLAS runs the same
+multiplication in 2 msec in Windows. On OSX using the
+Apple supplied default BLAS instead of OpenBLAS,
+`octave` needs 4-7 msec for the multiply.
+
+node.js v9.3.0 (javascript V8 engine), using math.js took 2174 msec.
+See big.js.gz / mat.js. http://mathjs.org/docs/datatypes/matrices.html
+So node.js comes in at about the same, if slightly slower, than Chez.
 
 notes
 -----
