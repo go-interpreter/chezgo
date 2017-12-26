@@ -137,7 +137,8 @@ Apple supplied default BLAS instead of OpenBLAS,
 
 node.js v9.3.0 (javascript V8 engine), using math.js took 2174 msec.
 See big.js.gz / mat.js. http://mathjs.org/docs/datatypes/matrices.html
-So node.js comes in at about the same, if slightly slower, than Chez.
+So node.js comes in at about the same speed as Chez.
+
 
 notes
 -----
