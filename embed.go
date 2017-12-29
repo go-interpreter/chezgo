@@ -5,10 +5,11 @@ import (
 )
 
 /*
-#cgo CFLAGS: -Wpointer-arith -O2 -I/opt/X11/include/ -I./chez_scheme_9.5.1/boot/a6osx -I./chez_scheme_9.5.1/c
+#cgo CFLAGS: -Wpointer-arith -O2 -I/opt/X11/include/ -I./chez_scheme_9.5.1/boot/a6osx -I./chez_scheme_9.5.1/c -I.
 #cgo LDFLAGS:  -liconv -lm -lncurses -L/usr/local/lib ./chez_scheme_9.5.1/boot/a6osx/kernel.o
 #include "scheme.h"
 extern void custom_init(void);
+#include "add.h"
 */
 import "C"
 
@@ -29,6 +30,8 @@ func main() {
 
 	C.Sbuild_heap(nil, nil)
 	//fmt.Printf("done building heap.\n")
+
+	C.Sforeign_symbol(C.CString("jea_add"), C.jea_add)
 
 	for {
 		//CALL1("display", Sstring("* "))
