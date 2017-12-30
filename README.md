@@ -68,7 +68,23 @@ Chez matrix multiplication, in matrix.ss
 turning on full optimization on Chez helped a little
 
 ~~~
- scheme --optimize-level 3 ./matrix.ss 
+;; after Andy Keep schooled me in optimizing
+;; scheme code... see his notes https://github.com/cisco/ChezScheme/issues/248
+> (run-bench)
+500 x 500 matrix multiply in Chez took 643 msec
+500 x 500 matrix multiply in Chez took 654 msec
+500 x 500 matrix multiply in Chez took 667 msec
+500 x 500 matrix multiply in Chez took 651 msec
+500 x 500 matrix multiply in Chez took 662 msec
+500 x 500 matrix multiply in Chez took 643 msec
+500 x 500 matrix multiply in Chez took 647 msec
+500 x 500 matrix multiply in Chez took 645 msec
+500 x 500 matrix multiply in Chez took 651 msec
+500 x 500 matrix multiply in Chez took 648 msec
+
+old, non-optimal code, uses set! which kills performance.
+
+scheme --optimize-level 3 ./matrix.ss 
 Chez Scheme Version 9.5.1
 Copyright 1984-2017 Cisco Systems, Inc.
 > (import (my-matrix))
