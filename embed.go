@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	//"unsafe"
 )
 
 /*
@@ -10,11 +11,22 @@ import (
 #include "scheme.h"
 extern void custom_init(void);
 #include "add.h"
+
+// forward declaration of the Go so that C knows about it.
+int MyGoTwice(int x);
+
+// the thunk
+int MyGoTwiceCgo(int x);
 */
 import "C"
 
 const Svoid = 0x3E
 const Seof_object = 0x36
+
+//export MyGoTwice
+func MyGoTwice(a int32) int32 {
+	return a * 2
+}
 
 //
 // modeled on the simple REPL example provided in
@@ -32,6 +44,7 @@ func main() {
 	//fmt.Printf("done building heap.\n")
 
 	C.Sforeign_symbol(C.CString("jea_add"), C.jea_add)
+	C.Sforeign_symbol(C.CString("go_twice"), C.MyGoTwiceCgo)
 
 	for {
 		//CALL1("display", Sstring("* "))
