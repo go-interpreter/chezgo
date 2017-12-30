@@ -10,4 +10,6 @@ int jea_add(int x);
 */
 int MyGoTwice(int x);
 
+void AbnormalExit();
+
 #endif /*ADD_H*/
